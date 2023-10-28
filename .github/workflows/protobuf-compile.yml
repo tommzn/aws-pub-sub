@@ -25,7 +25,7 @@ jobs:
       - name: Compile
         run: protoc --go_out=./ *.proto
       - name: Upload Golang artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: proto-sources
           path: ./*.pb.go
@@ -44,7 +44,7 @@ jobs:
       - name: Install Protobuf compiler
         run: git checkout ${{ env.PROTO_BRANCH }}
       - name: Download Golang events
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: proto-sources
       - name: Commir & Push
