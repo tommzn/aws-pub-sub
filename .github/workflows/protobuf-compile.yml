@@ -53,4 +53,4 @@ jobs:
           git config --global user.email ${{ secrets.USER_EMAIL }}
           git add -A
           git commit -am "Update proto sources.$GITHUB_SHA"
-          git push oritin ${{ env.PROTO_BRANCH }}
+          git push origin ${{ env.PROTO_BRANCH }}
