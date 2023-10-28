@@ -36,13 +36,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: proto-compile
     continue-on-error: true
-    env:
-        PROTO_BRANCH: proto-compile
     steps:
+      - name: Define branch name
+        run: echo "PROTO_BRANCH=proto-compile-$(date +'%Y%m%dT%H%M%S')" >> $GITHUB_ENV
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Install Protobuf compiler
-        run: git checkout ${{ env.PROTO_BRANCH }}
+        run: git checkout -b ${{ env.PROTO_BRANCH }}
       - name: Download Golang events
         uses: actions/download-artifact@v3
         with:
