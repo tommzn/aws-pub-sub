@@ -1,0 +1,17 @@
+
+syntax = "proto3";
+package pubsub;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = ".;pubsub";
+
+// ExampleMessage is used for testing.
+message ExampleMessage {
+    
+    // Value is content of this test message.
+    string                      Value       = 1;
+    
+    // Timestamp for testing.
+    google.protobuf.Timestamp   Timestamp   = 2;    
+}
