@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+permissions:
+  contents: write
       
 jobs:
   proto-compile:
@@ -35,7 +37,6 @@ jobs:
     name: Publish Compiled proto messages in a proto-compile branch.
     runs-on: ubuntu-latest
     needs: proto-compile
-    continue-on-error: true
     steps:
       - name: Define branch name
         run: echo "PROTO_BRANCH=proto-compile-$(date +'%Y%m%dT%H%M%S')" >> $GITHUB_ENV
