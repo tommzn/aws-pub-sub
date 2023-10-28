@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Get Go version
         run: echo "goversion=`egrep -i '^go [1-2][.][0-9]+$' go.mod | sed 's/go //' | sed 's/$/.x/'`" >> $GITHUB_ENV
       - name: Install Go
@@ -40,7 +40,7 @@ jobs:
         PROTO_BRANCH: proto-compile
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Install Protobuf compiler
         run: git checkout ${{ env.PROTO_BRANCH }}
       - name: Download Golang events
