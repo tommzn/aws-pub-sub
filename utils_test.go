@@ -28,7 +28,7 @@ func (suite *UtilsTestSuite) TestMessageMarshaling() {
 	testMessage := &ExampleMessage{Value: "Val01", Timestamp: timestamppb.New(time.Now())}
 
 	messageDate, err := marshalMessage(testMessage)
-	suite - Nil(err)
+	suite.Nil(err)
 
 	testMessage2 := &ExampleMessage{}
 	suite.Nil(UnmarshalMessage(messageDate, testMessage2))

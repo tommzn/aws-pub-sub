@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	uuid "github.com/satori/go.uuid"
+	"google.golang.org/protobuf/proto"
 )
 
 // NewMessageId generates a new UUID V4 message id.
@@ -28,4 +29,8 @@ func UnmarshalMessage(messageData string, message proto.Message) error {
 		return err
 	}
 	return proto.Unmarshal(protoData, message)
+}
+
+func awsString(val string) *string {
+	return &val
 }
