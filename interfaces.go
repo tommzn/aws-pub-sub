@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-sdk-go/service/sns"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -11,7 +12,7 @@ import (
 type Publisher interface {
 
 	// Send will publish a message.
-	Send(topic string, message proto.Message) error
+	Send(topicArn string, message proto.Message) error
 }
 
 // Consumer gets messages for processing.
@@ -39,4 +40,14 @@ type Persistence interface {
 
 	// Download can be used to retrieve a message by given object id.
 	Download(id *ObjectId) (proto.Message, error)
+
+	// Type returns type of used persistence layer.
+	Type() string
+}
+
+// SnsClient is an internal interface for a AWS SNS client.
+type snsClient interface {
+
+	// Publish to send message to a SNS topic.
+	Publish(*sns.PublishInput) (*sns.PublishOutput, error)
 }
