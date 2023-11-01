@@ -1,0 +1,12 @@
+name: Go Package Release
+on:
+  push:
+    tags:
+      - 'lambda/v*.*.*'
+permissions:
+  packages: write
+
+
+jobs:
+  go-auto-ci:
+    uses:  tommzn/github-ci/.github/workflows/go.lambda.image.build@v1.0.63
