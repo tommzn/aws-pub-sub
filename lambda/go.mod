@@ -18,7 +18,7 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.16.0 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
-	github.com/tommzn/aws-pub-sub v0.0.0-20231101203720-f6c80fe2cc95 // indirect
+	github.com/tommzn/aws-pub-sub v1.0.0
 	github.com/tommzn/go-config v1.2.0 // indirect
 	github.com/tommzn/go-log v1.2.2 // indirect
 	github.com/tommzn/go-secrets v1.1.2 // indirect

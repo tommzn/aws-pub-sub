@@ -286,6 +286,8 @@ github.com/subosito/gotenv v1.6.0/go.mod h1:Dk4QP5c2W3ibzajGcXpNraDfq2IrhjMIvMSW
 github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5/go.mod h1:ncp9v5uamzpCO7NfCPTXjqaC+bZgJeR0sMTm6dMHP7U=
 github.com/tommzn/aws-pub-sub v0.0.0-20231101203720-f6c80fe2cc95 h1:w5//28o+iTaYNg0LgAKhbCcNrKnEx6EVbhf0UqxolxQ=
 github.com/tommzn/aws-pub-sub v0.0.0-20231101203720-f6c80fe2cc95/go.mod h1:SUQofM2W+M8pyxkv2aZ8506wj7029gjIszG5WgvtoHE=
+github.com/tommzn/aws-pub-sub v1.0.0 h1:8rwpFRlGmbYi4wbex4yFxoxmC2lblygrUbD1AWbFYIA=
+github.com/tommzn/aws-pub-sub v1.0.0/go.mod h1:SUQofM2W+M8pyxkv2aZ8506wj7029gjIszG5WgvtoHE=
 github.com/tommzn/go-config v1.0.1/go.mod h1:K+ta7gkX32lSS+6tIIH9ttuhr35tV4AMAzOC640aRKE=
 github.com/tommzn/go-config v1.2.0 h1:rLPuf16jnZ/G6VZOvCpA63yxLJlJfwLbNJ7V+m6I1Lo=
 github.com/tommzn/go-config v1.2.0/go.mod h1:UfYkv7xLMuW3a0/0cW8IInbKYKy5imp++BcN1JMGrfk=
