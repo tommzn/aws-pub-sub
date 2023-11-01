@@ -1,8 +1,8 @@
 name: Protobuf Compile
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'proto/v*.*.*'
 permissions:
   contents: write
       
@@ -38,6 +38,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: proto-compile
     steps:
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Test
+        run: |
+          echo $RELEASE_VERSION
+          echo ${{ env.RELEASE_VERSION }}
       - name: Define branch name
         run: echo "PROTO_BRANCH=proto-compile-$(date +'%Y%m%dT%H%M%S')" >> $GITHUB_ENV
       - name: Checkout code
