@@ -78,3 +78,21 @@ func (mock *persistenceMock) Download(id *ObjectId) (proto.Message, error) {
 func (mock *persistenceMock) Type() string {
 	return "MOCK"
 }
+
+// ConsumerMock is used for test messsage subsription.
+type consumerMock struct {
+	messages []string
+}
+
+// NewConsumerMock creates a new conumer mock for testing.
+func newConsumerMock() *consumerMock {
+	return &consumerMock{
+		messages: []string{},
+	}
+}
+
+// Process will add passed message data ti internal list.
+func (mock *consumerMock) Process(messageData string) error {
+	mock.messages = append(mock.messages, messageData)
+	return nil
+}

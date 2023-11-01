@@ -19,17 +19,17 @@ type Publisher interface {
 type Consumer interface {
 
 	// Process receives messages for furthe processing.
-	Process(message proto.Message) error
+	Process(messageData string) error
 }
 
-// AwsLambdaHandler invoked by messges forwarder from a AWS SNS topic.
-type AwsLambdaHandler interface {
+// LambdaHandler invoked by messges forwarder from a AWS SNS topic.
+type LambdaHandler interface {
 
 	// Receive is a AWS lambda event handler to consumer SNS messages.
 	Receive(ctx context.Context, snsEvent events.SNSEvent)
 
 	// Subsribe is used to register message consumer for specific topics.
-	Subsribe(topic string, consumer Consumer)
+	Subsribe(topicArn string, consumer Consumer)
 }
 
 // Persistence is used to store large message.

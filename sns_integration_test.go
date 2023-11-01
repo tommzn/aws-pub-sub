@@ -3,9 +3,12 @@ package pubsub
 import (
 	"os"
 	"testing"
+	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/service/sns"
 	"github.com/stretchr/testify/suite"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type SnsIntegrationTestSuite struct {
@@ -45,4 +48,10 @@ func (suite *SnsIntegrationTestSuite) skipCI() {
 
 func (suite *SnsIntegrationTestSuite) TestSendMessge() {
 
+	publisher := &SnsPublisher{
+		snsClient: sns.New(newAwsSession(suite.awsConfig)),
+	}
+	testMessage := &ExampleMessage{Value: "AWS SNS Test Message", Timestamp: timestamppb.New(time.Now())}
+
+	suite.Nil(publisher.Send(suite.topicArn, testMessage))
 }

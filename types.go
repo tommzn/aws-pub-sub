@@ -1,5 +1,10 @@
 package pubsub
 
+import (
+	"github.com/tommzn/go-log"
+	"google.golang.org/protobuf/proto"
+)
+
 // MESSAGE_TYPE_ATTRIBUTE is the message attribute name where message type is placed.
 const MESSAGE_TYPE_ATTRIBUTE string = "MESSAGE_TYPE"
 
@@ -20,4 +25,19 @@ type ObjectId string
 type SnsPublisher struct {
 	snsClient   snsClient
 	persistence Persistence
+}
+
+// LogConsumer simple log received message.
+type LogConsumer struct {
+	logger  log.Logger
+	message proto.Message
+}
+
+// LambdaMessageSubscriber handles message received from AWS sNS
+// and forwards this messages, depending on topic to registered consumers.
+type LambdaMessageSubscriber struct {
+	logger log.Logger
+
+	// Consumers, list of message consumer per topic
+	consumers map[string][]Consumer
 }
