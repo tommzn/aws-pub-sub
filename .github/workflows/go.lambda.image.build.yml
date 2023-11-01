@@ -9,4 +9,4 @@ permissions:
 
 jobs:
   go-auto-ci:
-    uses:  tommzn/github-ci/.github/workflows/go.lambda.image.build@v1.0.63
+    uses:  tommzn/github-ci/.github/workflows/go.lambda.image.build.yml@v1.0.63
