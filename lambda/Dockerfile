@@ -1,4 +1,4 @@
-FROM gcr.io/distroless/static:nonroots
+FROM gcr.io/distroless/static:nonroot
 
 WORKDIR /go
 
