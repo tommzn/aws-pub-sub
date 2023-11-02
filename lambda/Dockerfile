@@ -1,6 +1,4 @@
-FROM alpine:latest
-
-RUN apk add --no-cache ca-certificates
+FROM gcr.io/distroless/static:nonroots
 
 WORKDIR /go
 
