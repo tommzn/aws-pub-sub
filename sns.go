@@ -4,13 +4,14 @@ import (
 	"errors"
 
 	"github.com/aws/aws-sdk-go/service/sns"
+	config "github.com/tommzn/go-config"
 	"google.golang.org/protobuf/proto"
 )
 
 // NewSnsPublisher creates a new publisher with default settings.
-func NewSnsPublisher() Publisher {
+func NewSnsPublisher(conf config.Config) Publisher {
 	return &SnsPublisher{
-		snsClient: sns.New(newAwsSession(newAWSConfig(nil))),
+		snsClient: sns.New(newAwsSession(newAWSConfig(conf))),
 	}
 }
 

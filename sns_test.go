@@ -68,7 +68,7 @@ func (suite *SnsTestSuite) TestSendKargeMessgeFailed() {
 
 func publisherForTest(shouldReturnError bool) Publisher {
 
-	publisher := NewSnsPublisher()
+	publisher := NewSnsPublisher(nil)
 	publisher.(*SnsPublisher).snsClient = newSnsMock(shouldReturnError)
 	return publisher
 }
