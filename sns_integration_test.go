@@ -1,19 +1,21 @@
 package pubsub
 
 import (
+	"context"
 	"os"
 	"testing"
 	"time"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/sns"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/stretchr/testify/suite"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type SnsIntegrationTestSuite struct {
 	suite.Suite
-	awsConfig *aws.Config
+	awsConfig aws.Config
 	topicArn  string
 }
 
@@ -22,20 +24,23 @@ func TestSnsIntegrationTestSuite(t *testing.T) {
 }
 
 func (suite *SnsIntegrationTestSuite) SetupSuite() {
-
 	suite.skipCI()
 
 	awsRegion, isSet := os.LookupEnv("SNS_TEST_REGION")
 	if !isSet {
 		suite.T().Error("Missing AWS region for integration test, SNS_TEST_REGION")
 	}
-	awsConfig := aws.NewConfig()
-	awsConfig.WithRegion(awsRegion)
-	suite.awsConfig = awsConfig
+
+	// Load AWS config with custom region
+	cfg, err := config.LoadDefaultConfig(context.Background(), config.WithRegion(awsRegion))
+	if err != nil {
+		suite.T().Fatalf("Failed to load AWS config: %v", err)
+	}
+	suite.awsConfig = cfg
 
 	snsTopic, isSet := os.LookupEnv("SNS_TEST_TOPIC")
 	if !isSet {
-		suite.T().Error("Missing AWS region for integration test, SNS_TEST_TOPIC")
+		suite.T().Error("Missing SNS topic ARN for integration test, SNS_TEST_TOPIC")
 	}
 	suite.topicArn = snsTopic
 }
@@ -46,12 +51,14 @@ func (suite *SnsIntegrationTestSuite) skipCI() {
 	}
 }
 
-func (suite *SnsIntegrationTestSuite) TestSendMessge() {
-
+func (suite *SnsIntegrationTestSuite) TestSendMessage() {
 	publisher := &SnsPublisher{
-		snsClient: sns.New(newAwsSession(suite.awsConfig)),
+		snsClient: sns.NewFromConfig(suite.awsConfig),
 	}
-	testMessage := &ExampleMessage{Value: "AWS SNS Test Message", Timestamp: timestamppb.New(time.Now())}
+	testMessage := &ExampleMessage{
+		Value:     "AWS SNS Test Message",
+		Timestamp: timestamppb.New(time.Now()),
+	}
 
 	suite.Nil(publisher.Send(suite.topicArn, testMessage))
 }
