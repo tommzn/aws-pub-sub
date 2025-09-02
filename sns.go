@@ -6,15 +6,10 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
+	"github.com/aws/aws-sdk-go-v2/service/sns/types"
 	confighlp "github.com/tommzn/go-config"
 	"google.golang.org/protobuf/proto"
 )
-
-// SnsPublisher implements Publisher using AWS SNS.
-type SnsPublisher struct {
-	snsClient   snsClient
-	persistence Persistence
-}
 
 // NewSnsPublisher creates a new publisher with default settings.
 func NewSnsPublisher(conf confighlp.Config) Publisher {
@@ -34,8 +29,8 @@ func (publisher *SnsPublisher) Send(topicArn string, message proto.Message) erro
 		return err
 	}
 
-	attributes := make(map[string]sns.MessageAttributeValue)
-	attributes[MESSAGE_TYPE_ATTRIBUTE] = sns.MessageAttributeValue{
+	attributes := make(map[string]types.MessageAttributeValue)
+	attributes[MESSAGE_TYPE_ATTRIBUTE] = types.MessageAttributeValue{
 		DataType:    aws.String("String"),
 		StringValue: aws.String(MESSAGE_TYPE_SNS),
 	}
@@ -52,7 +47,7 @@ func (publisher *SnsPublisher) Send(topicArn string, message proto.Message) erro
 		}
 
 		messageData = string(*objectId)
-		attributes[MESSAGE_TYPE_ATTRIBUTE] = sns.MessageAttributeValue{
+		attributes[MESSAGE_TYPE_ATTRIBUTE] = types.MessageAttributeValue{
 			DataType:    aws.String("String"),
 			StringValue: aws.String(publisher.persistence.Type()),
 		}
