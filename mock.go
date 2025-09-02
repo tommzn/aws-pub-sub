@@ -1,19 +1,20 @@
 package pubsub
 
 import (
+	"context"
 	"errors"
 
-	"github.com/aws/aws-sdk-go/service/sns"
+	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"google.golang.org/protobuf/proto"
 )
 
-// SnsMock for testing.
+// snsMock for testing.
 type snsMock struct {
 	shouldReturnError bool
 	messages          map[string][]*sns.PublishInput
 }
 
-// NewSnsMock returns a SNS client mock. You can specifiy whether each call to Send should return an error.
+// newSnsMock returns an SNS client mock. You can specify whether each call to Publish should return an error.
 func newSnsMock(shouldReturnError bool) *snsMock {
 	return &snsMock{
 		shouldReturnError: shouldReturnError,
@@ -21,11 +22,11 @@ func newSnsMock(shouldReturnError bool) *snsMock {
 	}
 }
 
-// Publish conforms to interface method and will persist given message locally for testing.
-func (mock *snsMock) Publish(publishInput *sns.PublishInput) (*sns.PublishOutput, error) {
+// Publish conforms to snsClient interface method and will persist given message locally for testing.
+func (mock *snsMock) Publish(ctx context.Context, publishInput *sns.PublishInput, optFns ...func(*sns.Options)) (*sns.PublishOutput, error) {
 
 	if mock.shouldReturnError {
-		return nil, errors.New("Failed!")
+		return nil, errors.New("failed")
 	}
 	if _, ok := mock.messages[*publishInput.TopicArn]; !ok {
 		mock.messages[*publishInput.TopicArn] = []*sns.PublishInput{}
@@ -34,26 +35,25 @@ func (mock *snsMock) Publish(publishInput *sns.PublishInput) (*sns.PublishOutput
 	return &sns.PublishOutput{}, nil
 }
 
-// PersistenceMock for testing.
+// persistenceMock for testing.
 type persistenceMock struct {
 	shouldReturnError bool
 	messages          map[ObjectId]proto.Message
 }
 
-// NewPersistenceMock returns a new mock. Use shouldReturnError to determins if each call to a method should return with an error.
+// newPersistenceMock returns a new mock. Use shouldReturnError to determine if each call should return an error.
 func newPersistenceMock(shouldReturnError bool) *persistenceMock {
-
 	return &persistenceMock{
 		shouldReturnError: shouldReturnError,
 		messages:          make(map[ObjectId]proto.Message),
 	}
 }
 
-// Upload confirms to interface method and will store given message locally.
+// Upload conforms to Persistence interface and will store given message locally.
 func (mock *persistenceMock) Upload(topic string, message proto.Message) (*ObjectId, error) {
 
 	if mock.shouldReturnError {
-		return nil, errors.New("Failed!")
+		return nil, errors.New("failed")
 	}
 
 	id := ObjectId(newMessageId())
@@ -65,13 +65,13 @@ func (mock *persistenceMock) Upload(topic string, message proto.Message) (*Objec
 func (mock *persistenceMock) Download(id *ObjectId) (proto.Message, error) {
 
 	if mock.shouldReturnError {
-		return nil, errors.New("Failed!")
+		return nil, errors.New("failed")
 	}
 
 	if message, ok := mock.messages[*id]; ok {
 		return message, nil
 	}
-	return nil, errors.New("Not found!")
+	return nil, errors.New("not found")
 }
 
 // Type will return default value "MOCK".
@@ -79,19 +79,19 @@ func (mock *persistenceMock) Type() string {
 	return "MOCK"
 }
 
-// ConsumerMock is used for test messsage subsription.
+// consumerMock is used for test message subscription.
 type consumerMock struct {
 	messages []string
 }
 
-// NewConsumerMock creates a new conumer mock for testing.
+// newConsumerMock creates a new consumer mock for testing.
 func newConsumerMock() *consumerMock {
 	return &consumerMock{
 		messages: []string{},
 	}
 }
 
-// Process will add passed message data ti internal list.
+// Process will add passed message data to internal list.
 func (mock *consumerMock) Process(messageData string) error {
 	mock.messages = append(mock.messages, messageData)
 	return nil

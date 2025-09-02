@@ -3,10 +3,14 @@ on:
   push:
     branches:
       - main
-permissions:
-  contents: write
+      - 'features/**'
+      - 'dependabot/**'
+  pull_request:
+    branches:
+      - 'features/**'
+      - 'dependabot/**'
 
 
 jobs:
   go-auto-ci:
-    uses:  tommzn/github-ci/.github/workflows/go.pkg.auto-ci.yml@v1.0.63
+    uses:  tommzn/github-ci/.github/workflows/go.pkg.auto-ci.yml@v1.0.100
