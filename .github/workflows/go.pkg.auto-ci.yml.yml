@@ -10,6 +10,8 @@ on:
       - 'features/**'
       - 'dependabot/**'
 
+permissions:
+  contents: write
 
 jobs:
   go-auto-ci:
